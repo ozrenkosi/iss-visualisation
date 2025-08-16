@@ -2,6 +2,9 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Google Sans Code", monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 
 canvas {
@@ -13,9 +16,6 @@ canvas {
   z-index: 999;
   color: white;
   padding: 20px 0 0 20px;
-  font-family: "Google Sans Code", monospace;
-  font-weight: 400;
-  font-style: normal;
   user-select: none;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ h1 {
   color: rgb(206, 206, 206);
 }
 
-#iss {
+#iss-tag {
   display: flex;
   flex-direction: row;
   column-gap: 10px;
@@ -42,7 +42,19 @@ h1 {
   border-radius: 999px;
 }
 
-p {
+#iss {
   font-size: 12px;
   color: rgb(172, 172, 172);
+}
+
+#hint {
+  font-size: 12px;
+  color: rgb(172, 172, 172);
+  position: absolute;
+  z-index: 999;
+  user-select: none;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 20px;
 }
