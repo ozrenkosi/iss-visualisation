@@ -49,8 +49,8 @@ function setupSunLight() {
 }
 
 function drawISS() {
-  let issLatitude = radians(float(issData.iss_position.latitude));
-  let issLongitude = radians(float(issData.iss_position.longitude));
+  let issLatitude = radians(float(issData.latitude));
+  let issLongitude = radians(float(issData.longitude));
 
   // Calculation for an un-rotated p5.js sphere
   let x = earthRadius * cos(issLatitude) * sin(issLongitude);
@@ -73,6 +73,6 @@ function drawISS() {
 }
 
 async function getIssData() {
-  let response = await fetch("http://api.open-notify.org/iss-now.json");
+  let response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
   issData = await response.json();
 }
