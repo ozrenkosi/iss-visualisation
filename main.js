@@ -1,10 +1,16 @@
 let earthTexture;
 let issData;
-let earthRadius = 200;
+let earthRadius;
 
 async function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   angleMode(RADIANS);
+
+  if (windowHeight < windowWidth) {
+    earthRadius = (windowHeight * 0.75) / 2;
+  } else {
+    earthRadius = (windowWidth * 0.75) / 2;
+  }
 
   earthTexture = await loadImage("images/Solarsystemscope_texture_8k_earth_daymap.jpg");
 
@@ -15,14 +21,14 @@ async function setup() {
 function draw() {
   background(10, 10, 20);
   noStroke();
-  orbitControl(); // Allow mouse control to rotate the globe
+  orbitControl(1, 1, 0); // Allow mouse control to rotate the globe, but not zoom
 
   setupSunLight();
 
   // Draw Earth
   rotateY(PI); // Correct texture orientation
   texture(earthTexture);
-  sphere(earthRadius, 24, 24);
+  sphere(earthRadius, 20, 20);
 
   if (issData) {
     drawISS();
