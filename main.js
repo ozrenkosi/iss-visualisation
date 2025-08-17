@@ -6,16 +6,12 @@ async function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   angleMode(RADIANS);
 
-  if (windowHeight < windowWidth) {
-    earthRadius = (windowHeight * 0.75) / 2;
-  } else {
-    earthRadius = (windowWidth * 0.75) / 2;
-  }
+  earthRadius = min(windowWidth, windowHeight) * 0.375;
 
   earthTexture = await loadImage("images/Solarsystemscope_texture_8k_earth_daymap.jpg");
 
   await getIssData(); // Initial fetch for ISS data
-  setInterval(getIssData, 5000); // update ISS every 5 seconds
+  setInterval(getIssData, 10000); // update ISS every 10 seconds
 }
 
 function draw() {
@@ -54,8 +50,8 @@ function setupSunLight() {
 }
 
 function drawISS() {
-  let issLatitude = radians(float(issData.latitude));
-  let issLongitude = radians(float(issData.longitude));
+  let issLatitude = radians(float(issData.iss_position.latitude));
+  let issLongitude = radians(float(issData.iss_position.longitude));
 
   let x = -earthRadius * cos(issLatitude) * sin(issLongitude);
   let y = -earthRadius * sin(issLatitude);
@@ -72,17 +68,11 @@ function drawISS() {
 }
 
 async function getIssData() {
-  try {
-    let response = await fetch("https://api.allorigins.win/raw?url=http://api.open-notify.org/iss-now.json");
-    if (!response.ok) throw new Error("API request failed");
-    let data = await response.json();
+  let response = await fetch("https://api.allorigins.win/raw?url=http://api.open-notify.org/iss-now.json");
+  issData = await response.json();
+}
 
-    issData = {
-      latitude: parseFloat(data.iss_position.latitude),
-      longitude: parseFloat(data.iss_position.longitude)
-    };
-  } catch (err) {
-    console.log("ISS data fetch error:", err);
-    issData = null;
-  }
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+  earthRadius = min(windowWidth, windowHeight) * 0.375;
 }
