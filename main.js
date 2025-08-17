@@ -67,7 +67,7 @@ function drawISS() {
   shininess(1);
   translate(x, y, z);
   fill(255, 0, 0);
-  sphere(5);
+  sphere(earthRadius / 50);
   pop();
 }
 
