@@ -53,8 +53,6 @@ function drawISS() {
   let issLatitude = radians(issData.latitude);
   let issLongitude = radians(issData.longitude);
 
-  console.log(issData);
-
   let x = -earthRadius * cos(issLatitude) * sin(issLongitude);
   let y = -earthRadius * sin(issLatitude);
   let z = -earthRadius * cos(issLatitude) * cos(issLongitude);
