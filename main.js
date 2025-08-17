@@ -38,17 +38,16 @@ function draw() {
 function setupSunLight() {
   // SunCalc returns azimuth and altitude for a given location & date
   let sunPosition = SunCalc.getPosition(new Date(), 0, 0); // lat, lon = 0,0
-
-  let azimuth = sunPosition.azimuth; // Sun's horizontal angle
-  let altitude = sunPosition.altitude; // Sun's vertical angle
+  let azimuth = sunPosition.azimuth;
+  let altitude = sunPosition.altitude;
 
   // Convert azimuth/altitude to a 3D directional vector for lighting
-  let sunX = cos(altitude) * sin(azimuth);
-  let sunY = sin(altitude);
-  let sunZ = cos(altitude) * cos(azimuth);
+  let sunX = -cos(altitude) * sin(azimuth);
+  let sunY = cos(altitude) * cos(azimuth);
+  let sunZ = sin(altitude);
 
   // Sun light
-  directionalLight(255, 255, 255, sunX, sunY, sunZ);
+  directionalLight(255, 255, 255, -sunX, -sunY, -sunZ);
 
   // Soft light on night side
   ambientLight(50);
@@ -58,21 +57,15 @@ function drawISS() {
   let issLatitude = radians(float(issData.latitude));
   let issLongitude = radians(float(issData.longitude));
 
-  // Calculation for an un-rotated p5.js sphere
-  let x = earthRadius * cos(issLatitude) * sin(issLongitude);
+  let x = -earthRadius * cos(issLatitude) * sin(issLongitude);
   let y = -earthRadius * sin(issLatitude);
-  let z = earthRadius * cos(issLatitude) * cos(issLongitude);
-
-  // The rotateY(PI) in the main draw loop flips the x and z axes so the same transformation need to be applied to the ISS coordinates.
-  let rotatedX = -x;
-  let rotatedY = y;
-  let rotatedZ = -z;
+  let z = -earthRadius * cos(issLatitude) * cos(issLongitude);
 
   // Draw ISS
   push();
   noLights();
   shininess(1);
-  translate(rotatedX, rotatedY, rotatedZ);
+  translate(x, y, z);
   fill(255, 0, 0);
   sphere(5);
   pop();
