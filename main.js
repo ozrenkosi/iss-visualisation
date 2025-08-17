@@ -10,7 +10,7 @@ async function setup() {
 
   earthTexture = await loadImage("images/Solarsystemscope_texture_8k_earth_daymap.jpg");
 
-  await getIssData(); // Initial fetch for ISS data
+  getIssData(); // Initial fetch for ISS data
   setInterval(getIssData, 6000); // update ISS every 6 seconds
 }
 
