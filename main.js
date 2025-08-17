@@ -73,6 +73,17 @@ function drawISS() {
 }
 
 async function getIssData() {
-  let response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
-  issData = await response.json();
+  try {
+    let response = await fetch("https://api.allorigins.win/raw?url=http://api.open-notify.org/iss-now.json");
+    if (!response.ok) throw new Error("API request failed");
+    let data = await response.json();
+
+    issData = {
+      latitude: parseFloat(data.iss_position.latitude),
+      longitude: parseFloat(data.iss_position.longitude)
+    };
+  } catch (err) {
+    console.log("ISS data fetch error:", err);
+    issData = null;
+  }
 }
