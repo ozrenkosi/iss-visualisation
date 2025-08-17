@@ -50,8 +50,10 @@ function setupSunLight() {
 }
 
 function drawISS() {
-  let issLatitude = radians(float(issData.iss_position.latitude));
-  let issLongitude = radians(float(issData.iss_position.longitude));
+  let issLatitude = radians(issData.latitude);
+  let issLongitude = radians(issData.longitude);
+
+  console.log(issData);
 
   let x = -earthRadius * cos(issLatitude) * sin(issLongitude);
   let y = -earthRadius * sin(issLatitude);
@@ -69,16 +71,17 @@ function drawISS() {
 
 async function getIssData() {
   try {
-    let response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+    let response = await fetch("https://api.allorigins.win/raw?url=http://api.open-notify.org/iss-now.json");
+    if (!response.ok) throw new Error("API request failed");
     let data = await response.json();
+
     issData = {
-      iss_position: {
-        latitude: data.latitude,
-        longitude: data.longitude
-      }
+      latitude: parseFloat(data.iss_position.latitude),
+      longitude: parseFloat(data.iss_position.longitude)
     };
-  } catch (e) {
-    console.error("ISS fetch error:", e);
+  } catch (err) {
+    console.log("ISS data fetch error:", err);
+    issData = null;
   }
 }
 
