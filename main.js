@@ -11,7 +11,7 @@ async function setup() {
   earthTexture = await loadImage("images/Solarsystemscope_texture_8k_earth_daymap.jpg");
 
   await getIssData(); // Initial fetch for ISS data
-  setInterval(getIssData, 10000); // update ISS every 10 seconds
+  setInterval(getIssData, 6000); // update ISS every 6 seconds
 }
 
 function draw() {
@@ -68,8 +68,18 @@ function drawISS() {
 }
 
 async function getIssData() {
-  let response = await fetch("https://api.allorigins.win/raw?url=http://api.open-notify.org/iss-now.json");
-  issData = await response.json();
+  try {
+    let response = await fetch("https://api.wheretheiss.at/v1/satellites/25544");
+    let data = await response.json();
+    issData = {
+      iss_position: {
+        latitude: data.latitude,
+        longitude: data.longitude
+      }
+    };
+  } catch (e) {
+    console.error("ISS fetch error:", e);
+  }
 }
 
 function windowResized() {
